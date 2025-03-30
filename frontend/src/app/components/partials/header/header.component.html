@@ -1,0 +1,25 @@
+<header>
+    <div class="container">
+        <a [routerLink]="['/']" routerLinkActive="router-link-active" class="logo">Food Mine</a>
+        <nav>
+            <ul>
+                <li>
+                    <a [routerLink]="['/login']" routerLinkActive="router-link-active">Login</a>
+                </li>
+                <li class="menu-container">
+                    <a [routerLink]="['/dashboard']" routerLinkActive="router-link-active">John</a>
+                    <div class="menu">
+                        <a [routerLink]="['/profile']" routerLinkActive="router-link-active">Profile</a>
+                        <a [routerLink]="['/orders']" routerLinkActive="router-link-active">Orders</a>
+                        <a>Logout</a>
+                    </div>
+                </li>
+                <li>
+                    <a [routerLink]="['/cart-page']" routerLinkActive="router-link-active">
+                        Cart <span class="cart-count">3</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
