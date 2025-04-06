@@ -3,8 +3,9 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { User } from '../shared/models/User';
 import { IUserLogin } from '../shared/interfaces/IUserLogin';
 import { HttpClient } from '@angular/common/http';
-import { USER_LOGIN_URL } from '../shared/models/constants/urls';
+import { USER_LOGIN_URL, USER_REGISTER_URL } from '../shared/models/constants/urls';
 import { ToastrService } from 'ngx-toastr';
+import { IUserRegister } from '../shared/interfaces/IUserRegister';
 
 const USER_KEY = 'user';
 @Injectable({
@@ -45,6 +46,23 @@ export class UserService {
   private removeUserFromLocalStorage(): void {
     localStorage.removeItem(USER_KEY);
   }
+
+  register(user: IUserRegister): Observable<User> {
+    return this.http.post<User>(USER_REGISTER_URL, user).pipe(
+      tap({
+        next: (user: User) => {
+          this.setUserToLocalStorage(user);
+          this.userSubject.next(user);
+          this.toastrService.success('Registration successful', 'Success');
+        },
+        error: (responseError) => {
+          this.toastrService.error(responseError.error, 'Register failed');
+        }
+      })
+    );
+  }
+
+  
 
   logout(): void {
     this.userSubject.next(new User());
