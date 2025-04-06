@@ -28,7 +28,7 @@ export class UserService {
           this.toastrService.success('Login successful', 'Success');
         },
         error: (responseError) => {
-          this.toastrService.error(responseError.error, 'Error');
+          this.toastrService.error(responseError.error?.Alert || responseError.error?.message, 'Error');
         }
       })
     );
@@ -56,13 +56,11 @@ export class UserService {
           this.toastrService.success('Registration successful', 'Success');
         },
         error: (responseError) => {
-          this.toastrService.error(responseError.error, 'Register failed');
+          this.toastrService.error(responseError.error?.Alert || responseError.error?.message, 'Register failed');
         }
       })
     );
   }
-
-  
 
   logout(): void {
     this.userSubject.next(new User());

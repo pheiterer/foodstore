@@ -3,7 +3,7 @@ import { sample_users } from '../data';
 import jwt from 'jsonwebtoken';
 import expressAsyncHandler from 'express-async-handler';
 import { UserModel } from '../models/user.model';
-import { HTTP_UNAUTHORIZED } from '../constants/http_status';
+import { HTTP_CONFLICT, HTTP_UNAUTHORIZED } from '../constants/http_status';
 import bycrpt from 'bcryptjs';
 
 const router = Router();
@@ -36,13 +36,13 @@ router.post('/login', expressAsyncHandler(
 ));
 
 router.post('/register', expressAsyncHandler(
-  async (req, res) => {
-    const { name, email, password, adress } = req.body;
+  async (req, res) => {    
+    const { name, email, password, address } = req.body;
 
     const userExists = await UserModel.findOne({ email });
 
     if (userExists) {
-      res.status(HTTP_UNAUTHORIZED).json({ Alert: 'User already exists' });
+      res.status(HTTP_CONFLICT).json({ Alert: 'User already exists' });
       return;
     } else {
       const encryptedPassword = await bycrpt.hash(password, 10);
@@ -51,7 +51,7 @@ router.post('/register', expressAsyncHandler(
         name,
         email: email.toLowerCase(),
         password: encryptedPassword,
-        adress,
+        address,
         isAdmin: false,
       });
 

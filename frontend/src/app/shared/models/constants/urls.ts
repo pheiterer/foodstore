@@ -9,4 +9,4 @@ export const FOODS_ID_URL = `${FOODS_URL}/`;
 
 export const USER_URL = `${BASE_URL}/api/users`;
 export const USER_LOGIN_URL = `${USER_URL}/login`;
-export const USER_REGISTER_URL = `${BASE_URL}/register`;
+export const USER_REGISTER_URL = `${USER_URL}/register`;

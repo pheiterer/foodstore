@@ -1,10 +1,12 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
-const VALIDATOR_MESSAGE:any = {
+const VALIDATOR_MESSAGE: any = {
   required: 'This field is required',
   email: 'Please enter a valid email address',
-}
+  minlength: 'Field is too short',
+  passwordMismatch: 'Passwords do not match',
+};
 
 @Component({
   selector: 'input-validation',
