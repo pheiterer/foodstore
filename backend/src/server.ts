@@ -9,9 +9,9 @@ import { dbConnect } from './config/database.config';
 
 dbConnect();
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
 const corsOptions = {
-  origin: 'http://localhost:4200',
+  origin: ['http://localhost:4200', 'http://192.168.100.11:4200'],
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
   credentials: true,
@@ -22,7 +22,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/foods", foodRouter);
 app.use("/api/users", userRouter);
 
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is running on http://0.0.0.0:${PORT}`);
 });
-
