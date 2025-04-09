@@ -57,4 +57,4 @@ const orderSchema = new Schema<OrderItem>({
   },
 });
 
-export const OrderModel = model<OrderItem>("Order", orderSchema);
+export const OrderModel = model("Order", orderSchema);

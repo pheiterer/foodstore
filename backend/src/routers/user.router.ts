@@ -24,11 +24,9 @@ router.get('/seed', expressAsyncHandler(
 router.post('/login', expressAsyncHandler(
   async (req, res) => {
     const { email, password } = req.body;
-
-    const user = await UserModel.findOne({ email, password });
-
+    const user = await UserModel.findOne({ email });
     
-    if (user) {
+    if(user && (await bycrpt.compare(password,user.password))) {
       res.send(generateTokenResponse(user));
     } else {
       res.status(HTTP_UNAUTHORIZED).json({ Alert: 'Invalid email or password' });
