@@ -27,6 +27,7 @@ router.post('/login', expressAsyncHandler(
 
     const user = await UserModel.findOne({ email, password });
 
+    
     if (user) {
       res.send(generateTokenResponse(user));
     } else {
@@ -62,8 +63,8 @@ router.post('/register', expressAsyncHandler(
 
 const generateTokenResponse = (user: any) => {
   const token = jwt.sign({
-    email: user.email, isAdmin: user.isAdmin
-  }, "something", {
+    id: user.id, email: user.email, isAdmin: user.isAdmin
+  }, process.env.JWT_SECRET! , {
     expiresIn: '30d'
   })
 

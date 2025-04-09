@@ -85,6 +85,5 @@ export class MapComponent implements OnInit {
     latLng.lat = parseFloat(latLng.lat.toFixed(8));
     latLng.lng = parseFloat(latLng.lng.toFixed(8));
     this.order.addressLatLng = latLng;
-    console.log('addressLatLng', this.order.addressLatLng);
   }
 }
