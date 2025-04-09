@@ -51,13 +51,13 @@ export class CheckoutPageComponent implements OnInit {
       return;
     }
 
-    this.order.name = this.fc.address.value;
+    this.order.name = this.fc.name.value;
     this.order.address = this.fc.address.value;
 
     this.orderService.create(this.order).subscribe({
       next: (order) => {
         this.toastrService.success('Order created successfully', 'Success');
-        this.router.navigateByUrl('/orders');
+        this.router.navigateByUrl('/payment');
       },
       error: (error) => {
         this.toastrService.error('Error creating order', 'Error');

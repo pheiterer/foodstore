@@ -29,4 +29,12 @@ router.post('/create',
     }
 ));
 
+router.get('/newOrderForCurrentUser',expressAsyncHandler(
+  async (req:any, res:any) => {
+    const order = await OrderModel.findOne({user: req.user.id, status: OrderStatus.NEW});
+    if (order) res.send(order);
+    else res.status(HTTP_BAD_REQUEST).json({ Alert: 'No new order found for current user' });
+  }
+) )
+
 export default router;

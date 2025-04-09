@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { icon, LatLng, LatLngExpression, LatLngTuple, LeafletEvent, LeafletMouseEvent, map, Map, marker, Marker, tileLayer } from 'leaflet';
 import { LocationService } from 'src/app/services/location.service';
 import { Order } from 'src/app/shared/models/Order';
@@ -8,10 +8,12 @@ import { Order } from 'src/app/shared/models/Order';
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.css']
 })
-export class MapComponent implements OnInit {
+export class MapComponent implements OnChanges {
 
   @Input()
   order!: Order;
+  @Input()
+  readonly = false;
   private readonly DEFAULT_ZOOM = 16;
   private readonly MARKER_ICON = icon({
     iconUrl: 'https://img.wattpad.com/2e81be56eb640a3183bb5b0924c1ced061eb9037/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f776174747061642d6d656469612d736572766963652f53746f7279496d6167652f7433376233456f6430714c7651773d3d2d3732353236353131392e313539393662383238623133353339663633373237323136363130322e676966',
@@ -27,8 +29,30 @@ export class MapComponent implements OnInit {
 
   constructor(private locationService: LocationService) { }
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
+    if(!this.order) return;
     this.initializeMap();
+
+    if(this.readonly && this.addressLatLng){
+      this.showLocationOnReadonlyMode();
+    }
+  }
+  
+  showLocationOnReadonlyMode() {
+    const m = this.map;
+    this.setMarker(this.addressLatLng);
+    m.setView(this.addressLatLng, this.DEFAULT_ZOOM)
+
+    m.dragging.disable();
+    m.touchZoom.disable();
+    m.doubleClickZoom.disable();
+    m.scrollWheelZoom.disable();
+    m.boxZoom.disable();
+    m.keyboard.disable();
+    m.removeControl(m.zoomControl);
+    m.off('click');
+    m.tap?.disable();
+    this.currentMarker.dragging?.disable();
   }
 
   initializeMap(){
@@ -82,8 +106,15 @@ export class MapComponent implements OnInit {
   }
 
   set addressLatLng(latLng: LatLng){
+    if(!latLng.lat.toFixed) return;
+
     latLng.lat = parseFloat(latLng.lat.toFixed(8));
     latLng.lng = parseFloat(latLng.lng.toFixed(8));
     this.order.addressLatLng = latLng;
   }
+
+  get addressLatLng(): LatLng {
+    return this.order.addressLatLng as LatLng;
+  }
+  
 }
