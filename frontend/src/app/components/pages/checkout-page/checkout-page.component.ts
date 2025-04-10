@@ -64,5 +64,4 @@ export class CheckoutPageComponent implements OnInit {
       }
     })
   }
-
 }
